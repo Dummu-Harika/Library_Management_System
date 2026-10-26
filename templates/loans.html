@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Issue and return · LibraryHub{% endblock %}
+{% block content %}
+<div class="page-heading"><div><h1>Issue &amp; return</h1><p>Track loans in MongoDB and member-book relationships in Neo4j.</p></div></div>
+<div class="form-card loan-card"><h2>Issue a book</h2>
+{% if books and members %}
+<form method="post" action="{{ url_for('issue_book') }}" class="form-grid">
+<label>Book<select name="book_id" required>{% for book in books %}<option value="{{ book._id }}">{{ book.title }} — {{ book.author }}</option>{% endfor %}</select></label>
+<label>Member<select name="member_id" required>{% for member in members %}<option value="{{ member._id }}">{{ member.name }} ({{ member.email }})</option>{% endfor %}</select></label>
+<label>Due date<input type="date" name="due_date" required></label>
+<div class="form-actions"><button class="button" type="submit">Issue book</button></div>
+</form>
+{% else %}<p class="hint">Add at least one available book and one member before issuing a book.</p>{% endif %}
+</div>
+<h2 class="table-title">Loan history</h2>
+<div class="table-wrap"><table><thead><tr><th>Book</th><th>Member</th><th>Issue date</th><th>Due date</th><th>Status</th><th>Action</th></tr></thead><tbody>
+{% for loan in loans %}
+<tr><td>{{ loan.book.title if loan.book else 'Book deleted' }}</td><td>{{ loan.member.name if loan.member else 'Member deleted' }}</td><td>{{ loan.issue_date }}</td><td>{{ loan.due_date }}</td><td><span class="availability {{ 'yes' if loan.status == 'Returned' else 'no' }}">{{ loan.status }}</span></td><td>{% if loan.status == 'Issued' %}<form method="post" action="{{ url_for('return_book', loan_id=loan._id) }}"><button class="button small" type="submit">Mark returned</button></form>{% else %}—{% endif %}</td></tr>
+{% else %}<tr><td colspan="6" class="empty">No loans recorded yet.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}

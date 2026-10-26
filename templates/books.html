@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Books · LibraryHub{% endblock %}
+{% block content %}
+<div class="page-heading"><div><h1>Book catalog</h1><p>Manage all books in your library.</p></div><a class="button" href="{{ url_for('add_book') }}">＋ Add book</a></div>
+<form class="search" method="get"><input name="q" value="{{ q }}" placeholder="Search title, author, or genre"><button class="button" type="submit">Search</button></form>
+<div class="table-wrap"><table><thead><tr><th>Title</th><th>Author</th><th>Genre</th><th>ISBN</th><th>Status</th><th>Actions</th></tr></thead><tbody>
+{% for book in books %}
+<tr><td><strong>{{ book.title }}</strong></td><td>{{ book.author }}</td><td>{{ book.genre }}</td><td>{{ book.isbn or '—' }}</td><td><span class="availability {{ 'yes' if book.available else 'no' }}">{{ 'Available' if book.available else 'Issued' }}</span></td><td class="actions"><a href="{{ url_for('edit_book', book_id=book._id) }}">Edit</a><form method="post" action="{{ url_for('delete_book', book_id=book._id) }}" onsubmit="return confirm('Delete this book?')"><button class="link danger" type="submit">Delete</button></form></td></tr>
+{% else %}<tr><td colspan="6" class="empty">No matching books found.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}

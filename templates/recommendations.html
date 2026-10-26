@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}Recommendations · LibraryHub{% endblock %}
+{% block content %}
+<div class="page-heading"><div><h1>Book recommendations</h1><p>Neo4j finds books in genres connected to a member's borrowing history.</p></div></div>
+<div class="form-card"><form method="get" class="form-grid"><label>Select member<select name="member_id" required><option value="">Choose a member</option>{% for member in members %}<option value="{{ member._id }}" {{ 'selected' if selected_member == member._id|string else '' }}>{{ member.name }}</option>{% endfor %}</select></label><div class="form-actions"><button class="button" type="submit">Find recommendations</button></div></form></div>
+{% if error %}<div class="alert error">Neo4j query failed: {{ error }}</div>{% endif %}
+{% if selected_member and not error %}
+<h2 class="table-title">Recommended books</h2>
+<div class="book-grid">{% for rec in recommendations %}<article class="book-card"><div class="book-cover">✨</div><div><span class="tag">Recommended</span><h3>{{ rec.title }}</h3><p>Because it shares a genre with a book previously borrowed by this member.</p></div></article>{% else %}<div class="empty">No recommendations found. Make sure the member has borrowed a book and another book exists in the same genre.</div>{% endfor %}</div>
+{% endif %}
+{% endblock %}

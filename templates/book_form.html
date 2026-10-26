@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if book else 'Add' }} book · LibraryHub{% endblock %}
+{% block content %}
+<div class="form-card"><a class="back" href="{{ url_for('books') }}">← Back to books</a><h1>{{ 'Edit book' if book else 'Add a book' }}</h1><p>Book details are stored in MongoDB and synchronized to the Neo4j graph.</p>
+<form method="post" class="form-grid">
+<label>Book title *<input name="title" required value="{{ book.title if book else '' }}"></label>
+<label>Author *<input name="author" required value="{{ book.author if book else '' }}"></label>
+<label>Genre *<input name="genre" required placeholder="e.g. Programming" value="{{ book.genre if book else '' }}"></label>
+<label>ISBN<input name="isbn" value="{{ book.isbn if book else '' }}"></label>
+<div class="form-actions"><button class="button" type="submit">Save book</button><a class="button secondary" href="{{ url_for('books') }}">Cancel</a></div>
+</form></div>
+{% endblock %}

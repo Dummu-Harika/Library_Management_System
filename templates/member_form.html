@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit' if member else 'Add' }} member · LibraryHub{% endblock %}
+{% block content %}
+<div class="form-card"><a class="back" href="{{ url_for('members') }}">← Back to members</a><h1>{{ 'Edit member' if member else 'Register a member' }}</h1><p>Member profiles are stored in MongoDB and represented as nodes in Neo4j.</p>
+<form method="post" class="form-grid">
+<label>Full name *<input name="name" required value="{{ member.name if member else '' }}"></label>
+<label>Email *<input type="email" name="email" required value="{{ member.email if member else '' }}"></label>
+<label>Department<input name="department" value="{{ member.department if member else '' }}"></label>
+<div class="form-actions"><button class="button" type="submit">Save member</button><a class="button secondary" href="{{ url_for('members') }}">Cancel</a></div>
+</form></div>
+{% endblock %}

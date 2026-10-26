@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Members · LibraryHub{% endblock %}
+{% block content %}
+<div class="page-heading"><div><h1>Library members</h1><p>Register and maintain member profiles.</p></div><a class="button" href="{{ url_for('add_member') }}">＋ Add member</a></div>
+<div class="table-wrap"><table><thead><tr><th>Name</th><th>Email</th><th>Department</th><th>Actions</th></tr></thead><tbody>
+{% for member in members %}
+<tr><td><strong>{{ member.name }}</strong></td><td>{{ member.email }}</td><td>{{ member.department or '—' }}</td><td class="actions"><a href="{{ url_for('edit_member', member_id=member._id) }}">Edit</a><form method="post" action="{{ url_for('delete_member', member_id=member._id) }}" onsubmit="return confirm('Delete this member?')"><button class="link danger" type="submit">Delete</button></form></td></tr>
+{% else %}<tr><td colspan="4" class="empty">No members registered yet.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}

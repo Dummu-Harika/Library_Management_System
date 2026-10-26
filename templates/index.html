@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · LibraryHub{% endblock %}
+{% block content %}
+<section class="hero">
+  <div><p class="eyebrow">LIBRARY MANAGEMENT SYSTEM</p><h1>Your library, organized.</h1>
+  <p>Manage books and members, track lending, and discover related books through graph recommendations.</p>
+  <a class="button" href="{{ url_for('add_book') }}">＋ Add a book</a></div>
+  <div class="hero-icon">📚</div>
+</section>
+<section class="stats">
+  <div class="stat"><span>Total books</span><strong>{{ stats.books }}</strong></div>
+  <div class="stat"><span>Available</span><strong>{{ stats.available }}</strong></div>
+  <div class="stat"><span>Members</span><strong>{{ stats.members }}</strong></div>
+  <div class="stat"><span>Books issued</span><strong>{{ stats.active_loans }}</strong></div>
+</section>
+<section class="section-heading"><div><h2>Recently added books</h2><p>Your latest catalog entries</p></div><a href="{{ url_for('books') }}">View all →</a></section>
+<div class="book-grid">
+{% for book in books %}
+  <article class="book-card"><div class="book-cover">📖</div><div><span class="tag">{{ book.genre }}</span><h3>{{ book.title }}</h3><p>{{ book.author }}</p><span class="availability {{ 'yes' if book.available else 'no' }}">{{ 'Available' if book.available else 'Issued' }}</span></div></article>
+{% else %}
+  <div class="empty">No books yet. Add your first book to get started.</div>
+{% endfor %}
+</div>
+{% endblock %}
